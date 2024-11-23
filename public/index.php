@@ -60,4 +60,4 @@ ob_start();
 $content = ob_get_clean();
 
 // Include the main layout
-include '../app/views/layout.php';
+include '../app/views/layouts/app.php';

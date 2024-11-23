@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../models/User.php';
+session_start();
 
 class UserController
 {
@@ -15,7 +16,8 @@ class UserController
         $userData = [
             'username' => htmlspecialchars(trim($_POST['username'])),
             'email' => htmlspecialchars(trim($_POST['email'])),
-            'password' => password_hash(trim($_POST['password']), PASSWORD_DEFAULT),
+            // 'password' => password_hash(trim($_POST['password']), PASSWORD_DEFAULT),
+            'password' => $_POST['password']
         ];
 
         $user = new User();
@@ -47,22 +49,23 @@ class UserController
         }
 
         // Sanitize input
-        $email = htmlspecialchars(trim($_POST['email']));
+        $email = trim($_POST['email']);
         $password = trim($_POST['password']);
 
         $user = new User();
         $foundUser = $user->findByEmail($email);
+     
 
-        if ($foundUser && password_verify($password, $foundUser['password'])) {
+        if (password_verify($password, $foundUser['user_password'])) {
             // Successful login, start a session
             session_start();
             $_SESSION['user_id'] = $foundUser['user_id'];
-            $_SESSION['username'] = $foundUser['username'];
+            $_SESSION['username'] = $foundUser['user_name'];
             $_SESSION['is_admin'] = $foundUser['is_admin'];
             $_SESSION['logedIn'] = true;
 
             // Redirect to user dashboard or other protected page
-            header('Location: /public/index.php');
+            header('Location:  ../../public/index.php');
             exit();
         } else {
             // Login failed, display an error message

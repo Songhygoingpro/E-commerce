@@ -37,7 +37,7 @@ class User {
 
     public function findByEmail($email) {
         try {
-            $sql = "SELECT * FROM users WHERE email = ?";
+            $sql = "SELECT * FROM users WHERE user_email = ?";
             $stmt = $this->conn->prepare($sql);
             
             if (!$stmt) {
