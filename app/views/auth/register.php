@@ -1,3 +1,10 @@
+<?php
+
+require_once '../../../vendor/autoload.php';
+use App\Controllers\UserController;
+$controller = new UserController();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,7 +19,7 @@
     <section class="register flex md:h-[100vh] items-center">
         <div class="register__inner p-5 md:py-6 md:px-8 rounded-2xl flex flex-col  mx-auto my-0 shadow-lg dark:border dark:border-primary-500 gap-6">
             <h1 class="text-2xl font-bold">Register</h1>
-            <form class="max-w-sm" action="../../controllers/UserController.php?action=register" method="post">
+            <form class="max-w-sm" action="<?php echo $controller->register(); ?>" method="post">
                 <div class="mb-5">
                     <label for="fname" class="block mb-2 text-sm font-medium text-gray-900 ">Your full name</label>
                     <input type="text" id="fname" name="username" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600   dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="Elon Mask" required />

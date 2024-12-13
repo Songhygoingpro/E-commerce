@@ -1,17 +1,29 @@
 <?php
-require_once __DIR__ . '/config.php';
+namespace Config;  // Corrected namespace for classes in the config folder
 
-class Database {
+use Config\Config; // Import the Config class to use constants
 
-    private $host = DB_HOST;
-    private $username = DB_USER;
-    private $password = DB_PASS;
-    private $dbname = DB_NAME;
+class database {
+
+    private $host;
+    private $username;
+    private $password;
+    private $dbname;
     private $connection;
 
-    public function connect() {
-        $this->connection = new mysqli($this->host, $this->username, $this->password, $this->dbname);
+    public function __construct() {
+        // Use constants from the Config class
+        $this->host = Config::DB_HOST;
+        $this->username = Config::DB_USER;
+        $this->password = Config::DB_PASS;
+        $this->dbname = Config::DB_NAME;
+    }
 
+    public function connect() {
+        // Create a new MySQLi connection
+        $this->connection = new \mysqli($this->host, $this->username, $this->password, $this->dbname);
+
+        // Check for connection errors
         if ($this->connection->connect_error) {
             die("Connection failed: " . $this->connection->connect_error);
         }

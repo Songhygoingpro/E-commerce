@@ -1,6 +1,9 @@
 <?php
 
-require_once '../../config/database.php';
+namespace App\Models;
+
+use Config\Database;
+use Exception;
 
 class User {
     private $conn;

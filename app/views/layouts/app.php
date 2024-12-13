@@ -1,7 +1,18 @@
 <?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['logout'])) {
+    // Destroy session data
+    session_unset();
+    session_destroy();
+
+    // Redirect to login or home page
+    header("Location: /e-commerce/public/index.php");
+    exit;
+}
+
 $logedIn = isset($_SESSION["logedIn"]) ? $_SESSION["logedIn"] : false;
 $signedUp = isset($_SESSION["signedUp"]) ? $_SESSION["signedUp"] : false;
-$is_admin =  isset($_SESSION['is_admin']) ? $_SESSION['is_admin'] : 0;
+$is_admin = isset($_SESSION['is_admin']) ? $_SESSION['is_admin'] : 0;
+
 ?>
 
 <!DOCTYPE html>
@@ -12,17 +23,17 @@ $is_admin =  isset($_SESSION['is_admin']) ? $_SESSION['is_admin'] : 0;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $pageTitle ?? 'JingHub' ?></title>
     <link rel="stylesheet" href="/public/assets/css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Joti+One&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link
-        rel="stylesheet"
-        href="https://unpkg.com/swiper@7/swiper-bundle.min.css">
+        href="https://fonts.googleapis.com/css2?family=Joti+One&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../public/assets/css/style.css" />
 </head>
 
 <body>
-    <header class="bg-black text-white flex justify-around items-center py-4 px-5 md:px-6">
+    <header class="bg-black text-white flex justify-between items-center py-4 px-5 md:px-6">
         <nav>
             <ul class="flex gap-4 font-medium">
                 <li><a href="" class="text-sm hover:opacity-80">STORE</a></li>
@@ -34,21 +45,38 @@ $is_admin =  isset($_SESSION['is_admin']) ? $_SESSION['is_admin'] : 0;
             </ul>
         </nav>
         <div class="logo__wrapper">
-            <a href="#" class="text-2xl md:text-3xl font-bold hover:text-gray-300" style="font-family: 'Joti One' , serif;">JingHub</a>
+            <a href="#" class="text-2xl md:text-3xl font-bold hover:text-gray-300"
+                style="font-family: 'Joti One' , serif;">JingHub</a>
         </div>
-        <div class="header-actions flex gap-4">
+        <div class="header-actions flex gap-4 relative">
             <button class="search-btn"><i class="fa fa-search hover:scale-110"></i></button>
             <button class="shop-btn"><i class="fa fa-shopping-cart hover:scale-110"></i></button>
             <?php if ($logedIn || $signedUp): ?>
-                <a href="" aria-label="Profile"><i class="fa fa-user hover:scale-110 border p-[5px] rounded-full"></i></a>
+                <button type="button" class="pf-btn"><i
+                        class="fa fa-user hover:scale-110 border p-[5px] rounded-full"></i></button>
+                <div class="relative md:block hidden">
+                    <div
+                        class="pf-nav hidden w-40 text-black bg-white z-10 transition-all duration-300 ease-in-out rounded-xl absolute top-10 right-0">
+                        <ul class="pf-nav__items flex flex-col p-6 text-sm rounded-md">
+                            <li class="pf-nav__item pb-4 text-xl font-medium"><a href="#"><?= $_SESSION['username'] ?></a></li>
+                            <li class="pf-nav__item py-4 border-t border-black text-nowrap"><a href="#">My Cart</a></li>
+                            <li class="pf-nav__item py-4 border-t border-black text-nowrap">
+                                <form action="" method="POST">
+                                    <button type="submit" name="logout">Log Out</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             <?php else: ?>
-                <a href="../app/views/auth/login.php" class="login-btn font-medium">Login</a>
+                <a href="/e-commerce/app/views/auth/login.php" class="login-btn font-medium">Login</a>
             <?php endif ?>
         </div>
     </header>
     <main><?php echo $content ?></main>
     <footer class="bg-black grid gap-4 pt-4">
-        <div class="payment-acception flex justify-center"><img class="h-6 w-auto" src="/public/assets/images/payment-acception.png" alt></div>
+        <div class="payment-acception flex justify-center"><img class="h-6 w-auto"
+                src="/public/assets/images/payment-acception.png" alt></div>
         <div class="w-full text-center py-2 px-6 border-t">
             <p class="text-white">&copy; <?php echo date('Y') ?> power by JingHub</p>
         </div>
@@ -89,7 +117,7 @@ $is_admin =  isset($_SESSION['is_admin']) ? $_SESSION['is_admin'] : 0;
         });
     </script>
 
-    <script src="/public/assets/js/script.js"></script>
+    <script src="../public/assets/js/app.js"></script>
 </body>
 
 </html>

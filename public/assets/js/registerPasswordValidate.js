@@ -1,4 +1,4 @@
-// assets/js/passwordValidation.js
+
 
 document.addEventListener("DOMContentLoaded", () => {
     const password = document.getElementById("password");
